@@ -1,11 +1,13 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const rp = require("request-promise");
+// const url = require("url");
 
 admin.initializeApp(functions.config().firebase);
 
-// Create and Deploy Your First Cloud Functions
-// https://firebase.google.com/docs/functions/write-firebase-functions
+exports.web = functions.https.onRequest((request, response) => {
+  response.send(`<h1> test </h1>`);
+});
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
   if (request.method !== "POST") {
@@ -67,5 +69,34 @@ exports.oauth_redirect = functions.https.onRequest(async (request, response) => 
   //     },
   //   });
 
-  response.header("Location", `https://${process.env.GCP_PROJECT}.firebaseapp.com/success.html?token=` + token).send(302);
+  //response.send(`
+  //<html>
+  //<head>
+  //  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+  //  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+  //  <script>
+  //    const firebaseConfig = {
+  //      apiKey: "${functions.config().sdkconfig.apikey}",
+  //      authDomain: "${functions.config().sdkconfig.authdomain}",
+  //      projectId: "${functions.config().sdkconfig.projectid}",
+  //    };
+  //    firebase.initializeApp(firebaseConfig);
+  //  </script>
+  //  <script>
+  //    const token = "${token}";
+  //    (async () => {
+  //      await firebase.auth().signInWithCustomToken(token);
+  //      await localStorage.setItem("token", token);
+  //      //window.location.href = "https://myroutine-test-0630.web.app/";
+  //    })();
+  //  </script>
+  //</head>
+  //</html>
+  //`);
+
+  // const redirectUri = new url(`https://${process.env.GCP_PROJECT}.web.app`);
+  // redirectUri.search = `token=${token}`;
+  // res.redirect(303, redirectUri.toString());
+
+  response.header("Location", `https://${process.env.GCP_PROJECT}.web.app?urlToken=` + token).send(302);
 });

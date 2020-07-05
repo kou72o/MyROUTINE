@@ -1,5 +1,37 @@
-<a href="https://slack.com/oauth/v2/authorize?user_scope=identity.basic&client_id=1111231477603.1217944570516">
-  <img alt=""Sign in with Slack"" height="40" width="172" src="https://platform.slack-edge.com/img/sign_in_with_slack.png"
-  srcset="https://platform.slack-edge.com/img/sign_in_with_slack.png 1x,
-  https://platform.slack-edge.com/img/sign_in_with_slack@2x.png 2x" />
-</a>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home</title>
+
+    <!-- update the version number as needed -->
+    <script src="/__/firebase/7.15.5/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script src="/__/firebase/7.15.5/firebase-auth.js"></script>
+    <script src="/__/firebase/7.15.5/firebase-database.js"></script>
+    <script src="/__/firebase/7.15.5/firebase-messaging.js"></script>
+    <script src="/__/firebase/7.15.5/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script src="/__/firebase/init.js"></script>
+  </head>
+  <body>
+    <h1>Welcome</h1>
+    <script>
+      const queryPrams = new URLSearchParams(window.location.search);
+      const urlToken = queryPrams.get("urlToken");
+      if (urlToken) {
+        localStorage.setItem("token", urlToken);
+      }
+      const token = localStorage.getItem("token");
+
+      (async () => {
+        await firebase.auth().signInWithCustomToken(token);
+        await firebase.auth().onAuthStateChanged((user) => {
+          document.write(JSON.stringify(user));
+        });
+      })();
+    </script>
+  </body>
+</html>
+
